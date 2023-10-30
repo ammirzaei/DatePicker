@@ -11,12 +11,15 @@ body{
 }
 
 .date-picker-container{
-    /* display: none; */
+    display: none;
     box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
     width: 500px;
     border-radius: 10px;
     padding: 0px 5px 20px;
     margin: 0 auto;
+}
+.date-picker-container.active{
+    display: block;
 }
 .date-picker-header-command{
     border-bottom: 1px solid rgb(234, 234, 234);
@@ -84,4 +87,24 @@ body{
 }
 .date-picker-content td.active p{
     color: #eeeaea;
+}
+.date-picker-content td.disabled{
+    pointer-events: none;
+    opacity: .4;
+}
+.date-picker-footer{
+    width: '100%';
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 10px;
+}
+.btn{
+    border: 0;
+    border-radius: 6px;
+    background-color: royalblue;
+    color: #fff;
+    padding: 6px 15px;
+    font-family: isw;
+    font-size: 16px;
+    cursor: pointer;
 }

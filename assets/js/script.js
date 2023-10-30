@@ -7,7 +7,8 @@ const datePicker = document.querySelector("#datePicker"),
   datePickerBody = document.querySelector("#datePickerBody"),
   datePickerHead = document.querySelector('#datePickerHead'),
   changeLocale = document.querySelector('#changeLocale'),
-  goToday = document.querySelector('#goToday');
+  goToday = document.querySelector('#goToday'),
+  confirmDate = document.querySelector('#confirmDate');
 
 /// Variables
 let locale = "fa",
@@ -32,9 +33,34 @@ const weekDaysFa = [
   "جمعه",
 ];
 const data = {
-  "1402/08/8" : 50000,
-  "1402/08/10" : 200000,
-  "1402/08/27" : 6000000,
+  "2023/10/30" : {
+    price : 50000,
+    description : 'توضیحات',
+    disabled: false,
+    color: null,
+    bgColor: null
+  },
+  "2023/10/2" : {
+    price : 2600000,
+    description : '23توضیحات',
+    disabled: true,
+    color: null,
+    bgColor: null,
+  },
+  "2023/10/5" : {
+    price : 10000,
+    description : '23توضیحات',
+    disabled: false,
+    color: null,
+    bgColor: 'pink',
+  },
+  "2023/10/17" : {
+    price : 1200000,
+    description : 'توضیحات 33333',
+    disabled: false,
+    color: 'red',
+    bgColor: null
+  },
 }
 
 // Functions
@@ -98,6 +124,19 @@ function dayOfDatePickerHandler(date, isToday) {
       const dateFormat = `${date.format('YYYY/MM/')}${day}`;
       td.setAttribute('date', dateFormat);
 
+      /// Config
+      const config = data[locale === 'fa' ? moment(dateFormat, 'jYYYY/jMM/jD').locale('en').format("YYYY/MM/D") : dateFormat];
+      const configEl = document.createElement('p');
+      if(config){
+        configEl.appendChild(document.createTextNode(config?.price?.toLocaleString() || '--'));
+        if(config?.disabled) td.classList.add('disabled');
+        if(config?.color) td.style.color = config?.color;
+        if(config?.bgColor) td.style.backgroundColor = config?.bgColor;
+        if(config?.description) td.title = config?.description;
+      } else configEl.appendChild(document.createTextNode('--'));
+
+      td.appendChild(configEl);
+
       /// Today
       if(isToday && dateFormat === today){
         td.classList.add('active');
@@ -107,12 +146,7 @@ function dayOfDatePickerHandler(date, isToday) {
       /// Active
       if(!isToday && input.value && (dateFormat === input.value || dateFormat === moment(input.value, locale === 'en' ? 'jYYYY/jMM/jD' : 'YYYY/MM/D').locale(locale).format(locale === 'en' ? "YYYY/MM/D" : "jYYYY/jMM/jD"))){
         td.classList.add('active');
-      }
-
-      /// Show Price
-      const price = document.createElement('p');
-      price.appendChild(document.createTextNode(data[dateFormat]?.toLocaleString() || '--'))
-      td.appendChild(price);
+      }   
     }
     tr.appendChild(td);
     if (Number.isInteger(i / 7)) {
@@ -136,7 +170,18 @@ function removeAllDayActive(){
   });
 }
 
-input.addEventListener("focus", () => {});
+input.addEventListener("focus", (e) => {
+  e.stopPropagation();
+  datePicker.classList.add('active');
+});
+document.body.addEventListener('click', (e)=>{
+  if(!e.target.closest('#datePicker') && datePicker.classList.contains('active') && e.target !== input){
+    datePicker.classList.remove('active');
+  }
+});
+confirmDate.addEventListener('click', ()=>{
+  datePicker.classList.remove('active');
+})
 monthHeaderNext.addEventListener("click", () => {
   mainHandler('next');
 });
