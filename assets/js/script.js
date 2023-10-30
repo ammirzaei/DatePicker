@@ -11,7 +11,7 @@ const datePicker = document.querySelector("#datePicker"),
 
 /// Variables
 let locale = "fa",
-  month = -1;
+  month = 0;
 
 const weekDaysEn = [
   "Friday",
@@ -31,6 +31,11 @@ const weekDaysFa = [
   "پنج‌شنبه",
   "جمعه",
 ];
+const data = {
+  "1402/08/8" : 50000,
+  "1402/08/10" : 200000,
+  "1402/08/27" : 6000000,
+}
 
 // Functions
 function dayWeekHandler(){
@@ -84,6 +89,7 @@ function dayOfDatePickerHandler(date, isToday) {
 
   let tr = document.createElement("tr");
   let output = document.createElement("tbody");
+
   for (let i = 1; i <= dayOfCompletedWeek; i++) {
     const td = document.createElement("td");
     if (i >= dayWeek && i < endDayOfMonth + dayWeek) {
@@ -92,15 +98,21 @@ function dayOfDatePickerHandler(date, isToday) {
       const dateFormat = `${date.format('YYYY/MM/')}${day}`;
       td.setAttribute('date', dateFormat);
 
-      if(input.value && (dateFormat === input.value || dateFormat === moment(input.value, locale === 'en' ? 'jYYYY/jMM/jD' : 'YYYY/MM/D').locale(locale).format(locale === 'en' ? "YYYY/MM/D" : "jYYYY/jMM/jD"))){
-        td.classList.add('active');
-      }
-
+      /// Today
       if(isToday && dateFormat === today){
-        removeAllDayActive();
         td.classList.add('active');
         input.value = today;
       }
+
+      /// Active
+      if(!isToday && input.value && (dateFormat === input.value || dateFormat === moment(input.value, locale === 'en' ? 'jYYYY/jMM/jD' : 'YYYY/MM/D').locale(locale).format(locale === 'en' ? "YYYY/MM/D" : "jYYYY/jMM/jD"))){
+        td.classList.add('active');
+      }
+
+      /// Show Price
+      const price = document.createElement('p');
+      price.appendChild(document.createTextNode(data[dateFormat]?.toLocaleString() || '--'))
+      td.appendChild(price);
     }
     tr.appendChild(td);
     if (Number.isInteger(i / 7)) {
@@ -147,15 +159,17 @@ changeLocale.addEventListener('click', ()=>{
   mainHandler('');
 });
 datePickerBody.addEventListener('click', (e)=>{
-  if(e.target.localName === "td" && e.target.hasAttribute('date')){
-    input.value = e.target.getAttribute('date');
-    
-    /// remove other active
-    removeAllDayActive();
+  let target;
+  if(e.target.localName === "td" && e.target.hasAttribute('date') ) target = e.target;
+  if(e.target.parentElement.localName === "td" && e.target.parentElement.hasAttribute('date')) target = e.target.parentElement;
 
-    /// add new active
-    e.target.classList.add('active');
-  }
+  input.value = target.getAttribute('date');
+    
+  /// remove other active
+  removeAllDayActive();
+
+  /// add new active
+  target.classList.add('active');
 });
 goToday.addEventListener('click', ()=>{
   mainHandler('', true);
