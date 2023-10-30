@@ -20,7 +20,7 @@ body{
 }
 .date-picker-header-command{
     border-bottom: 1px solid rgb(234, 234, 234);
-    padding: 10px 0;
+    padding: 10px 5px;
 }
 .date-picker-header-command span, i{
     color: rebeccapurple;
@@ -55,8 +55,13 @@ body{
   padding: 3px;
   margin: 2px 2px;
 }
-.date-picker-content td{
+.date-picker-content td[date]{
     border: 1px solid rgb(234, 234, 234);
     border-radius: 8px;
     cursor: pointer;
+}
+.date-picker-content td.active{
+    border: 0;
+    background-color: royalblue;
+    color: #fff;
 }

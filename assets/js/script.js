@@ -82,7 +82,14 @@ function dayOfDatePickerHandler(date) {
   for (let i = 1; i <= dayOfCompletedWeek; i++) {
     const td = document.createElement("td");
     if (i >= dayWeek && i < endDayOfMonth + dayWeek) {
-      td.appendChild(document.createTextNode((i - dayWeek + 1).toString()));
+      const day = i - dayWeek + 1;
+      td.appendChild(document.createTextNode(day.toString()));
+      const dateFormat = `${date.format('YYYY/MM/')}${day}`;
+      td.setAttribute('date', dateFormat);
+
+      if(dateFormat === input.value){
+        td.classList.add('active');
+      }
     }
     tr.appendChild(td);
     if (Number.isInteger(i / 7)) {
@@ -122,4 +129,17 @@ changeLocale.addEventListener('click', ()=>{
   }
 
   mainHandler();
-})
+});
+datePickerBody.addEventListener('click', (e)=>{
+  if(e.target.localName === "td" && e.target.hasAttribute('date')){
+    input.value = e.target.getAttribute('date');
+    
+    /// remove other active
+    datePickerBody.querySelectorAll('td.active').forEach((currentEl)=>{
+      currentEl.classList.remove('active');
+    });
+
+    /// add new active
+    e.target.classList.add('active');
+  }
+});
