@@ -6,7 +6,8 @@ const datePicker = document.querySelector("#datePicker"),
   monthHeaderNext = document.querySelector("#monthHeaderNext"),
   datePickerBody = document.querySelector("#datePickerBody"),
   datePickerHead = document.querySelector('#datePickerHead'),
-  changeLocale =document.querySelector('#changeLocale');
+  changeLocale = document.querySelector('#changeLocale'),
+  goToday = document.querySelector('#goToday');
 
 /// Variables
 let locale = "fa",
@@ -50,16 +51,20 @@ function dayWeekHandler(){
 
   datePickerHead.innerHTML = output.innerHTML;
 }
-function mainHandler(command = "next") {
+function mainHandler(command = "next", isToday = false) {
   dayWeekHandler();
-  command === "next" ? ++month : --month;
+
+  if(isToday) month = 0;
+  else command === "next" ? ++month : --month;
+
   const today = new Date();
   const date = moment(today).locale(locale).add(month, "jM");
   monthHeaderTitle.innerHTML = date.format("MMMM YYYY");
 
-  dayOfDatePickerHandler(date);
+  dayOfDatePickerHandler(date, isToday);
 }
-function dayOfDatePickerHandler(date) {
+function dayOfDatePickerHandler(date, isToday) {
+  const today = date.format('YYYY/MM/D');
   const month = locale === 'fa' ? "jMonth" : "month";
   const firstMonth = date.startOf(month);
   const dayWeek = dayOfWeek(firstMonth.format("dddd"));
@@ -90,6 +95,11 @@ function dayOfDatePickerHandler(date) {
       if(dateFormat === input.value){
         td.classList.add('active');
       }
+
+      if(isToday && dateFormat === today){
+        td.classList.add('active');
+        input.value = today;
+      }
     }
     tr.appendChild(td);
     if (Number.isInteger(i / 7)) {
@@ -106,6 +116,11 @@ function dayOfDatePickerHandler(date) {
 function dayOfWeek(weekDayWord) {
   if (locale === "fa") return weekDaysFa.indexOf(weekDayWord) + 1;
   else return weekDaysEn.indexOf(weekDayWord) + 1;
+}
+function removeAllDayActive(){
+  datePickerBody.querySelectorAll('td.active').forEach((currentEl)=>{
+    currentEl.classList.remove('active');
+  });
 }
 
 input.addEventListener("focus", () => {});
@@ -135,11 +150,13 @@ datePickerBody.addEventListener('click', (e)=>{
     input.value = e.target.getAttribute('date');
     
     /// remove other active
-    datePickerBody.querySelectorAll('td.active').forEach((currentEl)=>{
-      currentEl.classList.remove('active');
-    });
+    removeAllDayActive();
 
     /// add new active
     e.target.classList.add('active');
   }
 });
+goToday.addEventListener('click', ()=>{
+  removeAllDayActive();
+  mainHandler('', true);
+})

@@ -22,7 +22,7 @@ body{
     border-bottom: 1px solid rgb(234, 234, 234);
     padding: 10px 5px;
 }
-.date-picker-header-command span, i{
+.date-picker-header-command :is(span, i){
     color: rebeccapurple;
     font-weight: 600;
     cursor: pointer;
@@ -44,7 +44,8 @@ body{
     width: 100%;
 }
 .date-picker-content th{
-    color: red;
+    color: #959EA6;
+    font-size: 14px;
 }
 .date-picker-content tr{
     display: flex;
@@ -52,13 +53,14 @@ body{
 .date-picker-content th, .date-picker-content td{
   flex: 1;
   text-align: center;
-  padding: 3px;
+  padding: 7px 0px;
   margin: 2px 2px;
 }
 .date-picker-content td[date]{
     border: 1px solid rgb(234, 234, 234);
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
+    color: #4B5259;
 }
 .date-picker-content td.active{
     border: 0;
