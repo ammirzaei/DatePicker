@@ -51,11 +51,11 @@ function dayWeekHandler(){
 
   datePickerHead.innerHTML = output.innerHTML;
 }
-function mainHandler(command = "next", isToday = false) {
+function mainHandler(command = "", isToday = false) {
   dayWeekHandler();
 
   if(isToday) month = 0;
-  else command === "next" ? ++month : --month;
+  else command === "next" ? ++month : command === 'prev' ? --month : false;
 
   const today = new Date();
   const date = moment(today).locale(locale).add(month, "jM");
@@ -92,7 +92,7 @@ function dayOfDatePickerHandler(date, isToday) {
       const dateFormat = `${date.format('YYYY/MM/')}${day}`;
       td.setAttribute('date', dateFormat);
 
-      if(dateFormat === input.value){
+      if(input.value && (dateFormat === input.value || dateFormat === moment(input.value, locale === 'en' ? 'jYYYY/jMM/jD' : 'YYYY/MM/D').locale(locale).format(locale === 'en' ? "YYYY/MM/D" : "jYYYY/jMM/jD"))){
         td.classList.add('active');
       }
 
@@ -126,7 +126,7 @@ function removeAllDayActive(){
 
 input.addEventListener("focus", () => {});
 monthHeaderNext.addEventListener("click", () => {
-  mainHandler();
+  mainHandler('next');
 });
 monthHeaderPrev.addEventListener("click", () => {
   mainHandler("prev");
@@ -144,7 +144,7 @@ changeLocale.addEventListener('click', ()=>{
     changeLocale.innerHTML = "تاریخ میلادی";
   }
 
-  mainHandler();
+  mainHandler('');
 });
 datePickerBody.addEventListener('click', (e)=>{
   if(e.target.localName === "td" && e.target.hasAttribute('date')){
