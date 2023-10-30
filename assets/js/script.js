@@ -169,11 +169,11 @@ function removeAllDayActive(){
 }
 
 /// Events
-input.addEventListener("focus", (e) => {
+input.addEventListener("click", (e) => {
   e.stopPropagation();
   datePicker.classList.add('active');
 });
-document.body.addEventListener('click', (e)=>{
+document.addEventListener('click', (e)=>{
   if(!e.target.closest('#datePicker') && datePicker.classList.contains('active') && e.target !== input){
     datePicker.classList.remove('active');
   }
