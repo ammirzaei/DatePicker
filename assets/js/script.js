@@ -4,20 +4,22 @@ const datePicker = document.querySelector("#datePicker"),
   monthHeaderTitle = document.querySelector("#monthHeaderTitle"),
   monthHeaderPrev = document.querySelector("#monthHeaderPrev"),
   monthHeaderNext = document.querySelector("#monthHeaderNext"),
-  datePickerBody = document.querySelector("#datePickerBody");
+  datePickerBody = document.querySelector("#datePickerBody"),
+  datePickerHead = document.querySelector('#datePickerHead'),
+  changeLocale =document.querySelector('#changeLocale');
 
 /// Variables
 let locale = "fa",
   month = -1;
 
 const weekDaysEn = [
-  "Saturday",
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
   "Friday",
+  "Thursday",
+  "Wednesday",
+  "Tuesday",
+  "Monday",
+  "Sunday",
+  "Saturday",
 ];
 const weekDaysFa = [
   "شنبه",
@@ -30,7 +32,26 @@ const weekDaysFa = [
 ];
 
 // Functions
-function handler(command = "next") {
+function dayWeekHandler(){
+  let output = document.createElement('tr');
+  if(locale === 'fa'){
+    weekDaysFa.forEach((day) => {
+      const th = document.createElement('th');
+      th.appendChild(document.createTextNode(day.slice(0,1)));
+      output.appendChild(th);
+    });
+  } else{
+    weekDaysEn.forEach((day) => {
+      const th = document.createElement('th');
+      th.appendChild(document.createTextNode(day.slice(0,2)));
+      output.appendChild(th);
+    });
+  }
+
+  datePickerHead.innerHTML = output.innerHTML;
+}
+function mainHandler(command = "next") {
+  dayWeekHandler();
   command === "next" ? ++month : --month;
   const today = new Date();
   const date = moment(today).locale(locale).add(month, "jM");
@@ -39,9 +60,10 @@ function handler(command = "next") {
   dayOfDatePickerHandler(date);
 }
 function dayOfDatePickerHandler(date) {
-  const firstMonth = date.startOf("jMonth");
+  const month = locale === 'fa' ? "jMonth" : "month";
+  const firstMonth = date.startOf(month);
   const dayWeek = dayOfWeek(firstMonth.format("dddd"));
-  const endMonth = date.endOf("jMonth");
+  const endMonth = date.endOf(month);
   const endDayOfMonth = +endMonth.format("DD");
 
   let dayOfCompletedWeek = 7 - (endDayOfMonth % 7) + endDayOfMonth;
@@ -50,6 +72,10 @@ function dayOfDatePickerHandler(date) {
     (endDayOfMonth === 30 && dayWeek === 7)
   )
     dayOfCompletedWeek += 7;
+
+  if(endDayOfMonth === 28 && dayWeek === 1){
+    dayOfCompletedWeek = 28;
+  }
 
   let tr = document.createElement("tr");
   let output = document.createElement("tbody");
@@ -64,6 +90,10 @@ function dayOfDatePickerHandler(date) {
       tr = document.createElement("tr");
     }
   }
+
+  if(locale === 'fa') datePickerBody.style.direction = 'rtl';
+  else  datePickerBody.style.direction = 'ltr';
+
   datePickerBody.innerHTML = output.innerHTML;
 }
 function dayOfWeek(weekDayWord) {
@@ -73,11 +103,23 @@ function dayOfWeek(weekDayWord) {
 
 input.addEventListener("focus", () => {});
 monthHeaderNext.addEventListener("click", () => {
-  handler();
+  mainHandler();
 });
 monthHeaderPrev.addEventListener("click", () => {
-  handler("prev");
+  mainHandler("prev");
 });
 document.addEventListener("DOMContentLoaded", () => {
-  handler();
+  mainHandler();
 });
+changeLocale.addEventListener('click', ()=>{
+  if(locale === 'fa') {
+    locale = 'en';
+    changeLocale.innerHTML = "تاریخ شمسی";
+  }
+  else {
+    locale = 'fa';
+    changeLocale.innerHTML = "تاریخ میلادی";
+  }
+
+  mainHandler();
+})

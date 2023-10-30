@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 
 <head>
     <meta charset="UTF-8">
@@ -15,41 +15,23 @@
 
     <div class="date-picker-container" id="datePicker">
         <div class="date-picker-header">
-            <i class="icon icon-chevron-right" id="monthHeaderPrev"></i>
-            <h3 id="monthHeaderTitle"></h3>
-            <i class="icon icon-chevron-left" id="monthHeaderNext"></i>
+            <div class="flex date-picker-header-command">
+               <span>برو به امروز</span>
+               <div class="flex">
+                    <i class="icon icon-calendar"></i>
+                    <span id="changeLocale">تاریخ میلادی</span>
+               </div>
+           </div>
+           <div class="flex date-picker-header-month">
+                <i class="icon icon-chevron-right" id="monthHeaderPrev"></i>
+                <h3 id="monthHeaderTitle"></h3>
+                <i class="icon icon-chevron-left" id="monthHeaderNext"></i>
+           </div>
         </div>
         <table class="date-picker-content">
-            <thead>
-                <tr>
-                    <th>ش</th>
-                    <th>ی</th>
-                    <th>د</th>
-                    <th>س</th>
-                    <th>چ</th>
-                    <th>پ</th>
-                    <th>ج</th>
-                </tr>
+            <thead id="datePickerHead">
             </thead>
             <tbody id="datePickerBody">
-                <!-- <tr>
-                    <td>1</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>5</td>
-                    <td>6</td>
-                    <td>7</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>9</td>
-                    <td>10</td>
-                    <td>11</td>
-                    <td>12</td>
-                    <td>13</td>
-                    <td>14</td>
-                </tr> -->
             </tbody>
         </table>
     </div>
