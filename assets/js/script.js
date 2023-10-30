@@ -13,7 +13,6 @@ const datePicker = document.querySelector("#datePicker"),
 /// Variables
 let locale = "fa",
   month = 0;
-
 const weekDaysEn = [
   "Friday",
   "Thursday",
@@ -32,29 +31,29 @@ const weekDaysFa = [
   "پنج‌شنبه",
   "جمعه",
 ];
-const data = {
-  "2023/10/30" : {
+const configuration = {
+  "2023-10-30" : {
     price : 50000,
     description : 'توضیحات',
     disabled: false,
     color: null,
     bgColor: null
   },
-  "2023/10/2" : {
+  "2023-10-2" : {
     price : 2600000,
     description : '23توضیحات',
     disabled: true,
     color: null,
     bgColor: null,
   },
-  "2023/10/5" : {
+  "2023-10-5" : {
     price : 10000,
     description : '23توضیحات',
     disabled: false,
     color: null,
     bgColor: 'pink',
   },
-  "2023/10/17" : {
+  "2023-10-17" : {
     price : 1200000,
     description : 'توضیحات 33333',
     disabled: false,
@@ -121,11 +120,11 @@ function dayOfDatePickerHandler(date, isToday) {
     if (i >= dayWeek && i < endDayOfMonth + dayWeek) {
       const day = i - dayWeek + 1;
       td.appendChild(document.createTextNode(day.toString()));
-      const dateFormat = `${date.format('YYYY/MM/')}${day}`;
+      const dateFormat = `${date.format(locale === 'fa' ? 'YYYY/MM/' : 'YYYY-MM-')}${day}`;
       td.setAttribute('date', dateFormat);
 
       /// Config
-      const config = data[locale === 'fa' ? moment(dateFormat, 'jYYYY/jMM/jD').locale('en').format("YYYY/MM/D") : dateFormat];
+      const config = configuration[locale === 'fa' ? moment(dateFormat, 'jYYYY/jMM/jD').locale('en').format("YYYY-MM-D") : dateFormat];
       const configEl = document.createElement('p');
       if(config){
         configEl.appendChild(document.createTextNode(config?.price?.toLocaleString() || '--'));
@@ -134,7 +133,6 @@ function dayOfDatePickerHandler(date, isToday) {
         if(config?.bgColor) td.style.backgroundColor = config?.bgColor;
         if(config?.description) td.title = config?.description;
       } else configEl.appendChild(document.createTextNode('--'));
-
       td.appendChild(configEl);
 
       /// Today
@@ -170,6 +168,7 @@ function removeAllDayActive(){
   });
 }
 
+/// Events
 input.addEventListener("focus", (e) => {
   e.stopPropagation();
   datePicker.classList.add('active');
@@ -200,7 +199,6 @@ changeLocale.addEventListener('click', ()=>{
     locale = 'fa';
     changeLocale.innerHTML = "تاریخ میلادی";
   }
-
   mainHandler('');
 });
 datePickerBody.addEventListener('click', (e)=>{
