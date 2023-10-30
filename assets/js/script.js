@@ -97,6 +97,7 @@ function dayOfDatePickerHandler(date, isToday) {
       }
 
       if(isToday && dateFormat === today){
+        removeAllDayActive();
         td.classList.add('active');
         input.value = today;
       }
@@ -157,6 +158,5 @@ datePickerBody.addEventListener('click', (e)=>{
   }
 });
 goToday.addEventListener('click', ()=>{
-  removeAllDayActive();
   mainHandler('', true);
-})
+});
