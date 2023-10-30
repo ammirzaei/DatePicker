@@ -1,0 +1,54 @@
+@font-face {
+    font-family: isw;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/isw/isw.woff');
+    font-display: swap;
+}
+
+body{
+    font-family: isw;
+}
+
+.date-picker-container{
+    /* display: none; */
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 0 auto;
+}
+.date-picker-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgb(234, 234, 234);
+}
+.date-picker-header .icon{
+    font-size: 25px;
+    cursor: pointer;
+}
+.date-picker-content{
+    /* border: 1px solid #ddd; */
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    margin-top: 5px;
+}
+.date-picker-content th{
+    color: red;
+}
+.date-picker-content tr{
+    display: flex;
+}
+.date-picker-content th, .date-picker-content td{
+  flex: 1;
+  text-align: center;
+  padding: 3px;
+  margin: 2px 2px;
+}
+.date-picker-content td{
+    border: 1px solid rgb(234, 234, 234);
+    border-radius: 8px;
+    cursor: pointer;
+}
