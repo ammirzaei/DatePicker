@@ -12,20 +12,24 @@ body{
 
 .date-picker-container{
     display: none;
-    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 3px 4px 1px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     width: 500px;
-    border-radius: 10px;
+    border-radius: 20px;
     padding: 0px 5px 20px;
     margin: 0 auto;
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
 }
 .date-picker-container.active{
     display: block;
 }
 .date-picker-header-command{
     border-bottom: 1px solid rgb(234, 234, 234);
-    padding: 10px 5px;
+    padding: 15px 10px;
 }
 .date-picker-header-command :is(span, i){
     color: royalblue;
@@ -43,11 +47,26 @@ body{
     padding: 10px 10px 0;
 }
 .date-picker-header-month .icon{
-    font-size: 25px;
+    font-size: 26px;
     cursor: pointer;
+    transition: all .3s ease-out;
+    border-radius: 50%;
+    padding: 3px;
+}
+.date-picker-header-month .icon:hover{
+   background-color: rgba(105, 105, 105, 0.1);
+}
+.date-picker-back{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9;
 }
 .date-picker-content{
-    border-radius: 5px;
     padding: 10px 0;
     width: 100%;
 }
@@ -90,22 +109,30 @@ body{
 .date-picker-content td.active p{
     color: #eeeaea;
 }
-.date-picker-content td.disabled{
+.date-picker-container .disabled{
     pointer-events: none;
     opacity: .4;
 }
 .date-picker-footer{
     width: '100%';
     display: flex;
-    justify-content: flex-end;
-    padding-left: 10px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+.selectedDate{
+    color: #959EA6;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 .btn{
     border: 0;
     border-radius: 6px;
     background-color: royalblue;
     color: #fff;
-    padding: 2px 20px;
+    padding: 4px 25px;
     font-family: isw;
     font-size: 16px;
     cursor: pointer;
@@ -118,7 +145,15 @@ body{
         padding: 5px 0px;
         margin: 0;
         top: 0;
-        z-index: 999;
-        overflow: hidden;
+        left: 0;
+        transform: none;
+        overflow-x: hidden;
+        border-radius: 0;
+    }
+    .date-picker-header-month{
+        padding: 5px 5px;
+    }
+    .date-picker-header-command{
+        padding: 10px;
     }
 }
