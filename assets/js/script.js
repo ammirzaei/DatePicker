@@ -10,7 +10,7 @@ const datePicker = document.querySelector("#datePicker"),
   goToday = document.querySelector("#goToday"),
   confirmDate = document.querySelector("#confirmDate"),
   datePickerBack = document.querySelector(".date-picker-back"),
-  selectedDate = document.querySelector('#selectedDate');
+  selectedDate = document.querySelector("#selectedDate");
 
 /// Variables
 let locale = "fa",
@@ -68,14 +68,54 @@ const configuration = {
 function mainHandler(command = "", isToday = false) {
   dayWeekHandler();
 
-  if (isToday) month = 0;
-  else command === "next" ? ++month : command === "prev" ? --month : false;
+  monthHandler(command, isToday);
 
-  const today = new Date();
-  const date = moment(today).locale(locale).add(month, "jM");
+  const date = getDateInDatePicker(isToday).add(month, "jM");
   monthHeaderTitle.innerHTML = date.format("MMMM YYYY");
 
   dayOfDatePickerHandler(date, isToday);
+}
+function monthHandler(command, isToday) {
+  if (isToday) month = 0;
+  else
+    switch (command) {
+      case "next": {
+        ++month;
+        break;
+      }
+      case "prev": {
+        --month;
+        break;
+      }
+      case "":
+        month = 0;
+        break;
+    }
+}
+function getDateInDatePicker(isToday) {
+  let date = moment(new Date()).locale(locale);
+
+  // input value
+  const inputValueLocale = input.value
+    ? getLocaleDate(moment(input.value).format("YYYY"))
+    : null;
+  const inputValueDate = input.value
+    ? moment(
+        input.value,
+        inputValueLocale === "fa" ? "jYYYY/jMM/jDD" : "YYYY-MM-DD"
+      ).locale("en")
+    : null;
+  if (inputValueDate && !isToday && inputValueDate.isValid()) {
+    date = inputValueDate.locale(locale);
+  }
+  return date;
+}
+function getLocaleDate(year) {
+  if (year) {
+    if (Math.abs(year - 1300) >= 600) return "en";
+    return "fa";
+  }
+  return null;
 }
 function dayWeekHandler() {
   let output = document.createElement("tr");
@@ -151,20 +191,19 @@ function dayOfDatePickerHandler(date, isToday) {
       /// Today
       if (isToday && dateFormat === today) {
         td.classList.add("active");
-        input.value = today;
+        selectedDate.textContent = today;
       }
 
       /// Active
+      const dateActive = getDateActive(false);
       if (
         !isToday &&
-        input.value &&
-        (dateFormat === input.value ||
-          dateFormat ===
-            moment(input.value, locale === "en" ? "jYYYY/jMM/jDD" : "YYYY/MM/DD")
-              .locale(locale)
-              .format(locale === "en" ? "YYYY/MM/DD" : "jYYYY/jMM/jDD"))
+        dateActive &&
+        dateFormat ===
+          dateActive.format(locale === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD")
       ) {
         td.classList.add("active");
+        selectedDate.innerHTML = dateFormat;
       }
     }
     tr.appendChild(td);
@@ -178,11 +217,27 @@ function dayOfDatePickerHandler(date, isToday) {
   else datePickerBody.style.direction = "ltr";
 
   // Confirm button Status
-  if (datePickerBody.querySelectorAll("td.active")?.length)
-    confirmDate.classList.remove("disabled");
+  if (selectedDate.textContent) confirmDate.classList.remove("disabled");
   else confirmDate.classList.add("disabled");
 
   datePickerBody.innerHTML = output.innerHTML;
+}
+function getDateActive() {
+  const dateActive =
+    selectedDate.textContent === input.value
+      ? input.value
+      : selectedDate.textContent;
+  if (dateActive) {
+    const dateLocale = getLocaleDate(moment(dateActive).format("YYYY"));
+    const date = moment(
+      dateActive,
+      dateLocale === "fa" ? "jYYYY/jMM/jDD" : "YYYY-MM-DD"
+    ).locale("en");
+    if (date.isValid()) {
+      return date.locale(locale);
+    }
+  }
+  return false;
 }
 function dayOfWeek(weekDayWord) {
   if (locale === "fa") return weekDaysFa.indexOf(weekDayWord) + 1;
@@ -203,6 +258,9 @@ input.addEventListener("click", (e) => {
   e.stopPropagation();
   datePicker.classList.add("active");
   datePickerBack.style.display = "block";
+  selectedDate.innerHTML = input.value;
+
+  mainHandler();
 });
 datePickerBack.addEventListener("click", () => {
   closeDatePicker();
@@ -226,9 +284,6 @@ monthHeaderNext.addEventListener("click", () => {
 monthHeaderPrev.addEventListener("click", () => {
   mainHandler("prev");
 });
-document.addEventListener("DOMContentLoaded", () => {
-  mainHandler();
-});
 changeLocale.addEventListener("click", () => {
   if (locale === "fa") {
     locale = "en";
@@ -237,7 +292,7 @@ changeLocale.addEventListener("click", () => {
     locale = "fa";
     changeLocale.innerHTML = "تاریخ میلادی";
   }
-  mainHandler("");
+  mainHandler("locale");
 });
 datePickerBody.addEventListener("click", (e) => {
   let target;
@@ -249,23 +304,25 @@ datePickerBody.addEventListener("click", (e) => {
   )
     target = e.target.parentElement;
 
-  const date = target.getAttribute("date");
-  if (selectedDate.textContent !== date) {
-    selectedDate.innerHTML = date;
+  if (target) {
+    const date = target?.getAttribute("date");
+    if (selectedDate.textContent !== date) {
+      selectedDate.innerHTML = date;
 
-    /// remove other active
-    removeAllDayActive();
+      /// remove other active
+      removeAllDayActive();
 
-    /// add new active
-    target.classList.add("active");
+      /// add new active
+      target.classList.add("active");
 
-    confirmDate.classList.remove("disabled");
-  } else {
-    selectedDate.innerHTML = "";
+      confirmDate.classList.remove("disabled");
+    } else {
+      selectedDate.innerHTML = "";
 
-    removeAllDayActive();
+      removeAllDayActive();
 
-    confirmDate.classList.add("disabled");
+      confirmDate.classList.add("disabled");
+    }
   }
 });
 goToday.addEventListener("click", () => {
