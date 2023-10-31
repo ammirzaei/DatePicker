@@ -136,7 +136,7 @@ function dayWeekHandler() {
   datePickerHead.innerHTML = output.innerHTML;
 }
 function dayOfDatePickerHandler(date, isToday) {
-  const today = date.format(locale === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD");
+  const today = moment(new Date()).locale(locale).format(locale === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD");
   const month = locale === "fa" ? "jMonth" : "month";
   const firstMonth = date.startOf(month);
   const dayWeek = dayOfWeek(firstMonth.format("dddd"));
@@ -192,6 +192,9 @@ function dayOfDatePickerHandler(date, isToday) {
       if (isToday && dateFormat === today) {
         td.classList.add("active");
         selectedDate.textContent = today;
+      }
+      if(!isToday && dateFormat === today){
+        td.classList.add('today');
       }
 
       /// Active
