@@ -37,28 +37,28 @@ const weekDaysFa = [
 const configuration = {
   "2023-10-30": {
     price: 50000,
-    description: "توضیحات",
+    title: "توضیحات",
     disabled: false,
     color: null,
     bgColor: null,
   },
   "2023-10-02": {
     price: 2600000,
-    description: "23توضیحات",
+    title: "23توضیحات",
     disabled: true,
     color: null,
     bgColor: null,
   },
   "2023-10-05": {
     price: 10000,
-    description: "23توضیحات",
+    title: "23توضیحات",
     disabled: false,
     color: null,
     bgColor: "pink",
   },
   "2023-10-17": {
     price: 1200000,
-    description: "توضیحات 33333",
+    title: "توضیحات 33333",
     disabled: false,
     color: "red",
     bgColor: null,
@@ -185,7 +185,7 @@ function dayOfDatePickerHandler(date, isToday) {
         if (config?.disabled) td.classList.add("disabled");
         if (config?.color) td.style.color = config?.color;
         if (config?.bgColor) td.style.backgroundColor = config?.bgColor;
-        if (config?.description) td.title = config?.description;
+        if (config?.title) td.setAttribute('data-title', config.title);
       } else configEl.appendChild(document.createTextNode("--"));
       td.appendChild(configEl);
 
@@ -334,4 +334,4 @@ goToday.addEventListener("click", () => {
 });
 closeDatePicker.addEventListener('click', ()=>{
   closeDatePickerHandler();
-})
+});
