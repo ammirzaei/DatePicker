@@ -36,6 +36,11 @@ body{
     font-weight: 600;
     cursor: pointer;
 }
+.date-picker-header-command .icon-close{
+    color: #2b2a2a;
+    margin-left: 10px;
+    font-size: 18px;
+}
 .flex{
     display: flex;
     align-items: center;
@@ -48,8 +53,9 @@ body{
 }
 .date-picker-header-month .icon{
     font-size: 26px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all .3s ease-out;
+    transition: all .1s ease-in;
     border-radius: 50%;
     padding: 3px;
 }

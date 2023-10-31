@@ -10,7 +10,8 @@ const datePicker = document.querySelector("#datePicker"),
   goToday = document.querySelector("#goToday"),
   confirmDate = document.querySelector("#confirmDate"),
   datePickerBack = document.querySelector(".date-picker-back"),
-  selectedDate = document.querySelector("#selectedDate");
+  selectedDate = document.querySelector("#selectedDate"),
+  closeDatePicker = document.querySelector('#closeDatePicker');
 
 /// Variables
 let locale = "fa",
@@ -251,7 +252,7 @@ function removeAllDayActive() {
     currentEl.classList.remove("active");
   });
 }
-function closeDatePicker() {
+function closeDatePickerHandler() {
   datePicker.classList.remove("active");
   datePickerBack.style.display = "none";
 }
@@ -266,7 +267,7 @@ input.addEventListener("click", (e) => {
   mainHandler();
 });
 datePickerBack.addEventListener("click", () => {
-  closeDatePicker();
+  closeDatePickerHandler();
 });
 document.addEventListener("click", (e) => {
   if (
@@ -274,12 +275,12 @@ document.addEventListener("click", (e) => {
     datePicker.classList.contains("active") &&
     e.target !== input
   ) {
-    closeDatePicker();
+    closeDatePickerHandler();
   }
 });
 confirmDate.addEventListener("click", () => {
   input.value = selectedDate.textContent;
-  closeDatePicker();
+  closeDatePickerHandler();
 });
 monthHeaderNext.addEventListener("click", () => {
   mainHandler("next");
@@ -331,3 +332,6 @@ datePickerBody.addEventListener("click", (e) => {
 goToday.addEventListener("click", () => {
   mainHandler("", true);
 });
+closeDatePicker.addEventListener('click', ()=>{
+  closeDatePickerHandler();
+})
