@@ -11,7 +11,7 @@ const datePicker = document.querySelector("#datePicker"),
   confirmDate = document.querySelector("#confirmDate"),
   datePickerBack = document.querySelector(".date-picker-back"),
   selectedDate = document.querySelector("#selectedDate"),
-  closeDatePicker = document.querySelector('#closeDatePicker');
+  closeDatePicker = document.querySelector("#closeDatePicker");
 
 /// Variables
 let locale = "fa",
@@ -137,7 +137,9 @@ function dayWeekHandler() {
   datePickerHead.innerHTML = output.innerHTML;
 }
 function dayOfDatePickerHandler(date, isToday) {
-  const today = moment(new Date()).locale(locale).format(locale === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD");
+  const today = moment(new Date())
+    .locale(locale)
+    .format(locale === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD");
   const month = locale === "fa" ? "jMonth" : "month";
   const firstMonth = date.startOf(month);
   const dayWeek = dayOfWeek(firstMonth.format("dddd"));
@@ -185,7 +187,7 @@ function dayOfDatePickerHandler(date, isToday) {
         if (config?.disabled) td.classList.add("disabled");
         if (config?.color) td.style.color = config?.color;
         if (config?.bgColor) td.style.backgroundColor = config?.bgColor;
-        if (config?.title) td.setAttribute('data-title', config.title);
+        if (config?.title) td.setAttribute("data-title", config.title);
       } else configEl.appendChild(document.createTextNode("--"));
       td.appendChild(configEl);
 
@@ -194,8 +196,8 @@ function dayOfDatePickerHandler(date, isToday) {
         td.classList.add("active");
         selectedDate.textContent = today;
       }
-      if(!isToday && dateFormat === today){
-        td.classList.add('today');
+      if (!isToday && dateFormat === today) {
+        td.classList.add("today");
       }
 
       /// Active
@@ -217,8 +219,12 @@ function dayOfDatePickerHandler(date, isToday) {
     }
   }
 
-  if (locale === "fa") datePickerBody.style.direction = "rtl";
-  else datePickerBody.style.direction = "ltr";
+  if (locale === "fa") {
+    datePickerBody.style.direction = "rtl";
+  } else {
+    datePickerBody.style.direction = "ltr";
+    datePicker.style.fontFeatureSettings = "lnum";
+  }
 
   // Confirm button Status
   if (selectedDate.textContent) confirmDate.classList.remove("disabled");
@@ -332,6 +338,6 @@ datePickerBody.addEventListener("click", (e) => {
 goToday.addEventListener("click", () => {
   mainHandler("", true);
 });
-closeDatePicker.addEventListener('click', ()=>{
+closeDatePicker.addEventListener("click", () => {
   closeDatePickerHandler();
 });
