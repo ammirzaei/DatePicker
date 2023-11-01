@@ -12,9 +12,9 @@ const datePicker = document.querySelector("#datePicker"),
   datePickerBack = document.querySelector(".date-picker-back"),
   selectedDate = document.querySelector("#selectedDate"),
   closeDatePicker = document.querySelector("#closeDatePicker"),
-  goTodayContainer = document.querySelector('#goTodayContainer'),
-  changeLocaleContainer = document.querySelector('#changeLocaleContainer'),
-  headerCommand = document.querySelector('#headerCommand');
+  goTodayContainer = document.querySelector("#goTodayContainer"),
+  changeLocaleContainer = document.querySelector("#changeLocaleContainer"),
+  headerCommand = document.querySelector("#headerCommand");
 
 /// Variables
 const weekDaysEn = [
@@ -146,13 +146,11 @@ function dayWeekHandler() {
 
   datePickerHead.innerHTML = output.innerHTML;
 }
-function getFormatAsLocale(argLocale = null){
-  return (argLocale || locale) === 'fa' ? "YYYY/MM/DD" : "YYYY-MM-DD";
+function getFormatAsLocale(argLocale = null) {
+  return (argLocale || locale) === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD";
 }
 function dayOfDatePickerHandler(date, isToday) {
-  const today = moment(new Date())
-    .locale(locale)
-    .format(getFormatAsLocale());
+  const today = moment(new Date()).locale(locale).format(getFormatAsLocale());
   const month = locale === "fa" ? "jMonth" : "month";
   const firstMonth = date.startOf(month);
   const dayWeek = dayOfWeek(firstMonth.format("dddd"));
@@ -222,8 +220,7 @@ function dayOfDatePickerHandler(date, isToday) {
       if (
         !isToday &&
         dateActive &&
-        dateFormat ===
-          dateActive.format(getFormatAsLocale())
+        dateFormat === dateActive.format(getFormatAsLocale())
       ) {
         td.classList.add("active");
         selectedDate.innerHTML = dateFormat;
@@ -275,11 +272,14 @@ function removeAllDayActive() {
     currentEl.classList.remove("active");
   });
 }
-function setInputValue(){
-  if(configuration?.outLocale && configuration?.outLocale !== locale)
-  {
-    console.log('aaaa');
-    input.value = moment(selectedDate.textContent, locale === 'fa' ? 'jYYYY/jMM/jDD' : 'YYYY-MM-DD').locale(configuration.outLocale).format(getFormatAsLocale(configuration.outLocale))
+function setInputValue() {
+  if (configuration?.outLocale && configuration?.outLocale !== locale) {
+    input.value = moment(
+      selectedDate.textContent,
+      locale === "fa" ? "jYYYY/jMM/jDD" : "YYYY-MM-DD"
+    )
+      .locale(configuration.outLocale)
+      .format(getFormatAsLocale(configuration.outLocale));
   } else input.value = selectedDate.textContent;
 }
 function closeDatePickerHandler() {
@@ -365,9 +365,12 @@ goToday.addEventListener("click", () => {
 closeDatePicker.addEventListener("click", () => {
   closeDatePickerHandler();
 });
-document.addEventListener('DOMContentLoaded', ()=>{
-  if(configuration.goToday === false && configuration.changeLocale === false) headerCommand.style.display = 'none';
-  else if(configuration.goToday === false) goTodayContainer.style.display = "none";
-  else if(configuration.changeLocale === false) changeLocaleContainer.style.display = 'none';
-  if(configuration.secondary === false) datePicker.style.width = '450px';
-})
+document.addEventListener("DOMContentLoaded", () => {
+  if (configuration.goToday === false && configuration.changeLocale === false)
+    headerCommand.style.display = "none";
+  else if (configuration.goToday === false)
+    goTodayContainer.style.display = "none";
+  else if (configuration.changeLocale === false)
+    changeLocaleContainer.style.display = "none";
+  if (configuration.secondary === false) datePicker.style.width = "450px";
+});
