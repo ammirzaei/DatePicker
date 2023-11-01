@@ -15,16 +15,15 @@ body{
     opacity: 0;
     box-shadow: 0px 3px 4px 1px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    width: 500px;
+    width: 480px;
     border-radius: 20px;
-    padding: 0px 5px 20px;
+    padding: 0px 5px 15px;
     margin: 0 auto;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 99;
-   
 }
 .date-picker-container.active{
     -webkit-animation:animate-date-picker-active .3s ease-in-out forwards; /* Chrome 16+, Safari 4+ */
@@ -55,7 +54,7 @@ body{
 .date-picker-header-command .icon-close{
     color: #2b2a2a;
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 20px;
 }
 .flex{
     display: flex;
@@ -65,7 +64,7 @@ body{
 }
 .date-picker-header-month{
     color: #2b2a2a;
-    padding: 10px 10px 0;
+    padding: 0px 10px;
 }
 #monthHeaderTitle{
     font-size: 17px;
@@ -92,7 +91,6 @@ body{
     z-index: 9;
 }
 .date-picker-content{
-    padding: 10px 0;
     width: 100%;
 }
 .date-picker-content th{
@@ -109,7 +107,7 @@ body{
 .date-picker-content th, .date-picker-content td{
   flex: 1;
   text-align: center;
-  padding: 7px 0px;
+  padding: 10px 2px;
   margin: 2px 2px;
   border: 1px solid transparent;
 }
@@ -165,10 +163,13 @@ body{
     align-items: center;
     justify-content: space-between;
     padding: 0 10px;
+    margin-top: 10px;
+    border-top: 1px solid rgb(234, 234, 234);
+    padding-top: 10px;
 }
 .selectedDate{
     color: #959EA6;
-    font-size: 13px;
+    font-size: 12.5px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -178,7 +179,7 @@ body{
     border-radius: 6px;
     background-color: royalblue;
     color: #fff;
-    padding: 4px 25px;
+    padding: 2px 25px;
     font-family: IRANSans;
     font-size: 14px;
     font-weight: 400;

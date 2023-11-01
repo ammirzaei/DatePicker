@@ -369,5 +369,5 @@ document.addEventListener('DOMContentLoaded', ()=>{
   if(configuration.goToday === false && configuration.changeLocale === false) headerCommand.style.display = 'none';
   else if(configuration.goToday === false) goTodayContainer.style.display = "none";
   else if(configuration.changeLocale === false) changeLocaleContainer.style.display = 'none';
-
+  if(configuration.secondary === false) datePicker.style.width = '450px';
 })
