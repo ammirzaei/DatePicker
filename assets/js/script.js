@@ -11,11 +11,12 @@ const datePicker = document.querySelector("#datePicker"),
   confirmDate = document.querySelector("#confirmDate"),
   datePickerBack = document.querySelector(".date-picker-back"),
   selectedDate = document.querySelector("#selectedDate"),
-  closeDatePicker = document.querySelector("#closeDatePicker");
+  closeDatePicker = document.querySelector("#closeDatePicker"),
+  goTodayContainer = document.querySelector('#goTodayContainer'),
+  changeLocaleContainer = document.querySelector('#changeLocaleContainer'),
+  headerCommand = document.querySelector('#headerCommand');
 
 /// Variables
-let locale = "fa",
-  month = 0;
 const weekDaysEn = [
   "Friday",
   "Thursday",
@@ -34,7 +35,7 @@ const weekDaysFa = [
   "پنج‌شنبه",
   "جمعه",
 ];
-const configuration = {
+const data = {
   "2023-10-30": {
     price: 50000,
     title: "توضیحات",
@@ -64,6 +65,15 @@ const configuration = {
     bgColor: null,
   },
 };
+const configuration = {
+  secondary: true, // پارامتر دوم  -> true - false
+  changeLocale: true, // تغییر تاریخ بین میلادی و شمسی -> true - false
+  goToday: true, // رفتن به تاریخ امروز -> true - false
+  locale: "fa", // تاریخ دیفالت -> 'fa' - 'en'
+  // outLocale: "fa", // تاریخ خروجی در اینپوت -> 'fa' - 'en'
+};
+let locale = configuration?.locale || "fa",
+  month = 0;
 
 // Functions
 function mainHandler(command = "", isToday = false) {
@@ -136,10 +146,13 @@ function dayWeekHandler() {
 
   datePickerHead.innerHTML = output.innerHTML;
 }
+function getFormatAsLocale(argLocale = null){
+  return (argLocale || locale) === 'fa' ? "YYYY/MM/DD" : "YYYY-MM-DD";
+}
 function dayOfDatePickerHandler(date, isToday) {
   const today = moment(new Date())
     .locale(locale)
-    .format(locale === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD");
+    .format(getFormatAsLocale());
   const month = locale === "fa" ? "jMonth" : "month";
   const firstMonth = date.startOf(month);
   const dayWeek = dayOfWeek(firstMonth.format("dddd"));
@@ -172,24 +185,28 @@ function dayOfDatePickerHandler(date, isToday) {
 
       /// Config
       const config =
-        configuration[
+        data[
           locale === "fa"
             ? moment(dateFormat, "jYYYY/jMM/jDD")
                 .locale("en")
                 .format("YYYY-MM-DD")
             : dateFormat
         ];
-      const configEl = document.createElement("p");
-      if (config) {
+      if (configuration.secondary) {
+        const configEl = document.createElement("p");
         configEl.appendChild(
-          document.createTextNode(config?.price?.toLocaleString() || "--")
+          document.createTextNode(
+            config?.price ? config.price?.toLocaleString() : "--"
+          )
         );
+        td.appendChild(configEl);
+      }
+      if (config) {
         if (config?.disabled) td.classList.add("disabled");
         if (config?.color) td.style.color = config?.color;
         if (config?.bgColor) td.style.backgroundColor = config?.bgColor;
         if (config?.title) td.setAttribute("data-title", config.title);
-      } else configEl.appendChild(document.createTextNode("--"));
-      td.appendChild(configEl);
+      }
 
       /// Today
       if (isToday && dateFormat === today) {
@@ -206,7 +223,7 @@ function dayOfDatePickerHandler(date, isToday) {
         !isToday &&
         dateActive &&
         dateFormat ===
-          dateActive.format(locale === "fa" ? "YYYY/MM/DD" : "YYYY-MM-DD")
+          dateActive.format(getFormatAsLocale())
       ) {
         td.classList.add("active");
         selectedDate.innerHTML = dateFormat;
@@ -258,6 +275,13 @@ function removeAllDayActive() {
     currentEl.classList.remove("active");
   });
 }
+function setInputValue(){
+  if(configuration?.outLocale && configuration?.outLocale !== locale)
+  {
+    console.log('aaaa');
+    input.value = moment(selectedDate.textContent, locale === 'fa' ? 'jYYYY/jMM/jDD' : 'YYYY-MM-DD').locale(configuration.outLocale).format(getFormatAsLocale(configuration.outLocale))
+  } else input.value = selectedDate.textContent;
+}
 function closeDatePickerHandler() {
   datePicker.classList.remove("active");
   datePickerBack.style.display = "none";
@@ -285,7 +309,7 @@ document.addEventListener("click", (e) => {
   }
 });
 confirmDate.addEventListener("click", () => {
-  input.value = selectedDate.textContent;
+  setInputValue();
   closeDatePickerHandler();
 });
 monthHeaderNext.addEventListener("click", () => {
@@ -341,3 +365,9 @@ goToday.addEventListener("click", () => {
 closeDatePicker.addEventListener("click", () => {
   closeDatePickerHandler();
 });
+document.addEventListener('DOMContentLoaded', ()=>{
+  if(configuration.goToday === false && configuration.changeLocale === false) headerCommand.style.display = 'none';
+  else if(configuration.goToday === false) goTodayContainer.style.display = "none";
+  else if(configuration.changeLocale === false) changeLocaleContainer.style.display = 'none';
+
+})

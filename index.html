@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DatePicker</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <link rel="stylesheet" href="/assets/css/icomoon.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/icomoon.css">
 </head>
 
 <body dir="rtl">
@@ -15,12 +15,12 @@
 
     <div class="date-picker-container" id="datePicker">
         <div class="date-picker-header">
-            <div class="flex date-picker-header-command">
-              <div class="flex">
+            <div class="flex date-picker-header-command" id="headerCommand">
+              <div class="flex" id="goTodayContainer">
                 <i class="icon icon-close" id="closeDatePicker"></i>
                 <span id="goToday">برو به امروز</span>
               </div>
-               <div class="flex">
+               <div class="flex" id="changeLocaleContainer">
                     <i class="icon icon-calendar"></i>
                     <span id="changeLocale">تاریخ میلادی</span>
                </div>
@@ -46,8 +46,8 @@
     </div>
     <div class="date-picker-back"></div>
 
-    <script src="/assets/js/jalali-moment.js"></script>
-    <script src="/assets/js/script.js"></script>
+    <script src="assets/js/jalali-moment.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 
 </html>
