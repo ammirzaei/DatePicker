@@ -216,7 +216,7 @@ function dayOfDatePickerHandler(date, isToday) {
       }
 
       /// Active
-      const dateActive = getDateActive(false);
+      const dateActive = getDateActive();
       if (
         !isToday &&
         dateActive &&
